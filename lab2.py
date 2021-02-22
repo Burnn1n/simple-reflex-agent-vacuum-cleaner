@@ -1,58 +1,60 @@
 import random
 class rooms():
-    roomCondition = [] # uruunuudiin baidal tsewer eswel bohir eseh
-    place = 0 # toos sorogchnii bairlal oroonii dugaar
-    #dirty bol 0 harin clean bol 1
+    roomCondition = [] # conditions of room dirty or clean
+    place = 0 # position of vacuum cleaner(number of room)
+    #0 if dirty else 1
     def __init__(self,n):
-        # oroonuuded sanamsargui baidlaar tolowuudiig ogoh
+        # all conditions of room are random
         for _ in range(n):
             self.roomCondition.append(random.randint(0,1))
         print(self.roomCondition)
 class actions(rooms):
-    count = 1 # niit hiisen tsewerlegeenii too
+    count = 1 # count of cleaned area
     def __init__(self,n):
         super().__init__(n)
-    # tsewerleh(dirty-s clean tolow ruu shiljuuleh)
+    # clean(make dirty condition clean)
     def suck(self):
         rooms.roomCondition[rooms.place] = 1
-        print("Амжилттай цэвэрлэлээ")
-    # 1 zuun tiish shiljih
+        print("successfully cleaned")
+    # move to the left 
     def left(self):
         rooms.place -= 1
-    # 1 baruun tiish shiljih
+    # move to the right
     def right(self):
         rooms.place += 1
-    # tsewerhen oroond yu ch hiihgui
+    # if condition is clean. Obviously this function is not needed but for better understanding in simple reflex agent it is included
     def noOp(self):
         pass
 class operation(actions):
     def __init__(self,n):
-        print(actions.count,"дахь тоос сорогчны үйлдэл эхлэв")
+        print(actions.count,"th operation of vacuum cleaner has started")
         super().__init__(n)
-        if(rooms.place == 0): # herew zuun zahaas uildel ehleh bol
+        if(rooms.place == 0): # if operation is starting from left
             for i in range(n):
-                if rooms.roomCondition[rooms.place] == 0: # herew bohir bol
+                if rooms.roomCondition[rooms.place] == 0: # if room is dirty
                     super().suck()                
                     print(rooms.roomCondition)
-                else : # herew tsewer bol
+                else : # if room is clean
                     super().noOp()
                 if i == n-1:
                     break
                 super().right()
-                print("Баруун тийш шилжив")
-        else: # herew baruun zahaas uildel ehleh bol
+                print("just moved to right")
+        else: # if operation is starting from right
             for i in range(n):
-                if rooms.roomCondition[rooms.place] == 0: # herew bohir bol
+                if rooms.roomCondition[rooms.place] == 0: # if room is dirty
                     super().suck()                
                     print(rooms.roomCondition)
-                else : # herew tsewer bol
+                else : # if room is clean
                     super().noOp()
                 if i == n-1:
                     break
                 super().left()
-                print("Зүүн тийш шилжив")
+                print("just moved to left")
         rooms.roomCondition = []
-        print(actions.count,"дахь тоос сорогчны үйлдэл амжилттай дуусав")
+        print(actions.count,"th operation of vacuum cleaner has successfully finished")
         actions.count += 1
-for _ in range(2):
-    operation(2)
+count_of_operation = 2
+count_of_rooms = 4
+for _ in range(count_of_operation):
+    operation(count_of_rooms)
